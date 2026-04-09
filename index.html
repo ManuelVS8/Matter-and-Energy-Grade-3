@@ -205,8 +205,8 @@
 <div class="container notranslate">
 
     <!-- ACCORDION 1 -->
-    <details class="card notranslate">
-        <summary>1. Matter: Mass and Volume</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">1. Matter: Mass and Volume</summary>
         <div class="card-content">
             <p class="notranslate">Matter is everything that has mass and occupies a volume.</p>
             <ul>
@@ -217,8 +217,8 @@
     </details>
 
     <!-- ACCORDION 2 -->
-    <details class="card notranslate">
-        <summary>2. States of Matter</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">2. States of Matter</summary>
         <div class="card-content">
             <p class="notranslate">Matter can be presented in three different states: solid, liquid, or gas. Matter can change state if we increase or decrease its temperature.</p>
             <ul>
@@ -231,8 +231,8 @@
     </details>
 
     <!-- ACCORDION 3 -->
-    <details class="card notranslate">
-        <summary>3. Origin of Materials</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">3. Origin of Materials</summary>
         <div class="card-content">
             <p class="notranslate">We can classify materials according to their origin:</p>
             <div class="subsection">
@@ -251,8 +251,8 @@
     </details>
 
     <!-- ACCORDION 4 -->
-    <details class="card notranslate">
-        <summary>4. Specific Properties of Materials</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">4. Specific Properties of Materials</summary>
         <div class="card-content">
             <p class="notranslate">We choose different materials to manufacture objects according to their characteristics.</p>
             <ul>
@@ -271,8 +271,8 @@
     </details>
 
     <!-- ACCORDION 5 -->
-    <details class="card notranslate">
-        <summary>5. Pure Substances and Mixtures</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">5. Pure Substances and Mixtures</summary>
         <div class="card-content">
             <p class="notranslate">Substances or materials can be presented in two forms:</p>
             <ul>
@@ -290,8 +290,8 @@
     </details>
 
     <!-- ACCORDION 6 -->
-    <details class="card notranslate">
-        <summary>6. Physical and Chemical Changes</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">6. Physical and Chemical Changes</summary>
         <div class="card-content">
             <p class="notranslate">Matter can experience changes. These changes can be physical or chemical.</p>
             <div class="subsection">
@@ -314,8 +314,8 @@
     </details>
 
     <!-- ACCORDION 7 -->
-    <details class="card notranslate">
-        <summary>7. Energy and its Forms</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">7. Energy and its Forms</summary>
         <div class="card-content">
             <p class="notranslate">Energy is the capacity to produce changes in matter. It presents itself in different forms:</p>
             <ul>
@@ -334,8 +334,8 @@
     </details>
 
     <!-- ACCORDION 8 -->
-    <details class="card notranslate">
-        <summary>8. Sources of Energy</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">8. Sources of Energy</summary>
         <div class="card-content">
             <p class="notranslate">Sources are the natural resources from which we obtain energy.</p>
             <div class="subsection">
@@ -358,8 +358,8 @@
     </details>
 
     <!-- ACCORDION 9 -->
-    <details class="card notranslate">
-        <summary>9. Responsible Consumption</summary>
+    <details class="card notranslate" ontoggle="playTapSound()">
+        <summary onclick="playTapSound()">9. Responsible Consumption</summary>
         <div class="card-content">
             <p class="notranslate">We must take care of our planet by making responsible use of energy:</p>
             <ul>
@@ -675,8 +675,9 @@
             </div>
 
             <div class="quiz-nav">
-                <button class="nav-btn" id="prevBtn" onclick="changeQuestion(-1)">Previous</button>
-                <button class="nav-btn" id="nextBtn" onclick="changeQuestion(1)">Next</button>
+                <button class="nav-btn" id="prevBtn" onclick="playTapSound(); changeQuestion(-1)">Previous</button>
+                <!-- CORRECCIÓN AQUÍ: AÑADIDO id="nextBtn" -->
+                <button class="nav-btn" id="nextBtn" onclick="playTapSound(); changeQuestion(1)">Next</button>
             </div>
         </div>
 
@@ -685,23 +686,51 @@
             <h2 class="notranslate">Quiz Finished!</h2>
             <div class="score-display" id="scoreText" style="display:block;">Score: 0/25</div>
             <div id="feedbackText" style="margin-top:10px; color:#666;"></div>
-            <button class="option-btn" style="text-align:center; margin-top:20px;" onclick="closeModal()">Close</button>
-            <button class="option-btn" style="text-align:center; margin-top:10px;" onclick="resetQuiz()">Repeat</button>
+            <button class="option-btn" style="text-align:center; margin-top:20px;" onclick="playTapSound(); closeModal()">Close</button>
+            <button class="option-btn" style="text-align:center; margin-top:10px;" onclick="playTapSound(); resetQuiz()">Repeat</button>
         </div>
 
     </div>
 </div>
 
 <script>
+    // --- AUDIO CONFIGURATION ---
+    const audioCompletado = new Audio('https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Completado.mp3');
+    const audioVictoria = new Audio('https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Termin%C3%A9.mp3');
+    const audioTap = new Audio('https://raw.githubusercontent.com/ManuelVS8/Efectos_audio/refs/heads/main/Tap.mp3');
+
+    // Preload audio
+    [audioCompletado, audioVictoria, audioTap].forEach(a => {
+        a.load();
+        a.volume = 0.5;
+    });
+
+    function reproducirSonidoVictoria() {
+        audioVictoria.currentTime = 0;
+        audioVictoria.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    function reproducirSonidoCompletado() {
+        audioCompletado.currentTime = 0;
+        audioCompletado.play().catch(e => console.log("Audio play failed:", e));
+    }
+
+    function playTapSound() {
+        audioTap.currentTime = 0;
+        audioTap.play().catch(e => console.log("Audio play failed:", e));
+    }
+    // --- END AUDIO CONFIGURATION ---
+
     // Quiz Logic
     let currentSlide = 0;
     const slides = document.querySelectorAll('.question-slide');
     const totalQuestions = slides.length;
     let score = 0;
-    let userAnswers = new Array(totalQuestions).fill(null); // Stores answer index
+    let userAnswers = new Array(totalQuestions).fill(null);
     let quizCompleted = false;
 
     function openModal() {
+        playTapSound();
         document.getElementById('quizModal').style.display = 'flex';
         document.getElementById('quiz-start').style.display = 'block';
         document.getElementById('quiz-game').classList.add('hidden');
@@ -710,10 +739,12 @@
     }
 
     function closeModal() {
+        playTapSound();
         document.getElementById('quizModal').style.display = 'none';
     }
 
     function startGame() {
+        playTapSound();
         document.getElementById('quiz-start').style.display = 'none';
         document.getElementById('quiz-game').classList.remove('hidden');
         showSlide(0);
@@ -725,18 +756,19 @@
         userAnswers.fill(null);
         quizCompleted = false;
         
-        // Clear visual styles from previous answers
+        // Limpiar estilos visuales
         slides.forEach(slide => {
             const options = slide.querySelectorAll('.option-btn');
             options.forEach(opt => {
                 opt.className = 'option-btn';
-                opt.style.pointerEvents = 'auto'; // Reactivate clicks
+                opt.style.pointerEvents = 'auto';
             });
         });
         updateProgress();
     }
 
     function resetQuiz() {
+        playTapSound();
         resetQuizData();
         document.getElementById('quiz-result').classList.add('hidden');
         document.getElementById('quiz-game').classList.remove('hidden');
@@ -744,14 +776,12 @@
     }
 
     function showSlide(index) {
-        // Hide all
         slides.forEach(slide => slide.classList.add('hidden'));
-        // Show current
         slides[index].classList.remove('hidden');
         
-        // Update nav buttons
         document.getElementById('prevBtn').classList.toggle('active', index > 0);
         
+        // CORRECCIÓN: Ahora encuentra correctamente el botón gracias al ID añadido en el HTML
         const nextBtn = document.getElementById('nextBtn');
         if (index === totalQuestions - 1) {
             nextBtn.innerText = "See Results";
@@ -759,41 +789,31 @@
             nextBtn.innerText = "Next";
         }
         
-        // Only allow advancing if an answer is selected (or if going back)
-        // If quiz is already completed, allow free navigation to review answers
         if (quizCompleted) {
             nextBtn.classList.add('active');
         } else {
             nextBtn.classList.toggle('active', userAnswers[index] !== null);
         }
-
         updateProgress();
     }
 
     function selectOption(btn, optionIndex) {
-        if (quizCompleted) return; // Do not allow changing answers if finished
+        if (quizCompleted) return;
+        playTapSound();
 
         const slide = btn.closest('.question-slide');
         const slideIndex = Array.from(slides).indexOf(slide);
-        
-        // Save user answer
         userAnswers[slideIndex] = optionIndex;
 
-        // Reset styles in this question
         const options = slide.querySelectorAll('.option-btn');
         options.forEach(opt => opt.classList.remove('selected'));
-
-        // Mark selected
         btn.classList.add('selected');
-
-        // Activate next button
         document.getElementById('nextBtn').classList.add('active');
     }
 
     function changeQuestion(direction) {
         const newIndex = currentSlide + direction;
 
-        // If trying to go next from last question and it is answered
         if (direction === 1 && currentSlide === totalQuestions - 1) {
             finishQuiz();
             return;
@@ -806,42 +826,84 @@
     }
 
     function finishQuiz() {
-        // Calculate score
         score = 0;
+        
+        // 1. Calcular puntuación total
         slides.forEach((slide, index) => {
             const correctAnswer = parseInt(slide.getAttribute('data-ans'));
-            const userAnswer = userAnswers[index];
-            
-            // Visually mark correct and incorrect
-            const options = slide.querySelectorAll('.option-btn');
-            
-            // Disable clicks
-            options.forEach(opt => opt.style.pointerEvents = 'none');
-
-            if (userAnswer === correctAnswer) {
+            if (userAnswers[index] === correctAnswer) {
                 score++;
-                options[userAnswer].classList.add('correct');
-            } else {
-                if (userAnswer !== null) {
-                    options[userAnswer].classList.add('wrong');
-                }
-                options[correctAnswer].classList.add('correct');
             }
         });
 
+        // 2. Marcar visualmente SOLO la pregunta actual
+        const currentSlideEl = slides[currentSlide];
+        const correctAnswer = parseInt(currentSlideEl.getAttribute('data-ans'));
+        const userAnswer = userAnswers[currentSlide];
+        const options = currentSlideEl.querySelectorAll('.option-btn');
+        
+        options.forEach(opt => opt.style.pointerEvents = 'none');
+        if (userAnswer === correctAnswer) {
+            options[userAnswer].classList.add('correct');
+        } else {
+            if (userAnswer !== null) options[userAnswer].classList.add('wrong');
+            options[correctAnswer].classList.add('correct');
+        }
+
         quizCompleted = true;
+        
+        // 3. Cambiar a pantalla de resultados
         document.getElementById('quiz-game').classList.add('hidden');
         document.getElementById('quiz-result').classList.remove('hidden');
+        
+        // Actualizar barra de progreso al 100% al terminar
+        document.getElementById('progressBar').style.width = "100%";
         
         document.getElementById('scoreText').innerText = "Your score: " + score + " / 25";
         
         let feedback = "";
-        if(score === 25) feedback = "Excellent! You are an expert in Matter and Energy.";
-        else if(score >= 20) feedback = "Very good! You passed with a high mark.";
-        else if(score >= 15) feedback = "Good, but revise some concepts.";
-        else feedback = "Keep studying the content, you can do it!";
-        
+        if(score === 25) {
+            feedback = "Excellent! You are an expert in Matter and Energy.";
+            reproducirSonidoVictoria();
+        } else {
+            feedback = "Test completed.";
+            reproducirSonidoCompletado();
+            if(score >= 20) feedback += " Very good! You passed with a high mark.";
+            else if(score >= 15) feedback += " Good, but revise some concepts.";
+            else feedback += " Keep studying the content, you can do it!";
+        }
         document.getElementById('feedbackText').innerText = feedback;
+    }
+
+    // Override showSlide to handle marking other slides when navigating after finish
+    const originalShowSlide = showSlide;
+    showSlide = function(index) {
+        // Llamar a la función original
+        originalShowSlide(index);
+
+        // Si el test ha terminado y estamos navegando, marcamos la pregunta a la que llegamos
+        if (quizCompleted) {
+            const slide = slides[index];
+            // Si aún no ha sido marcada visualmente
+            const options = slide.querySelectorAll('.option-btn');
+            let isMarked = false;
+            options.forEach(opt => {
+                if(opt.classList.contains('correct') || opt.classList.contains('wrong')) isMarked = true;
+            });
+
+            if (!isMarked) {
+                const correctAnswer = parseInt(slide.getAttribute('data-ans'));
+                const userAnswer = userAnswers[index];
+                
+                options.forEach(opt => opt.style.pointerEvents = 'none');
+                if (userAnswer === correctAnswer) {
+                    options[userAnswer].classList.add('correct');
+                } else {
+                    if (userAnswer !== null) options[userAnswer].classList.add('wrong');
+                    options[correctAnswer].classList.add('correct');
+                }
+            }
+        }
     }
 
     function updateProgress() {
